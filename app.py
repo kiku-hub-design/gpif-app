@@ -47,24 +47,26 @@ zero_flag_percent = False
 for i in range(max_years):
     rate = repeated_rates[i]
 
-    # 定額方式
+    # 定額方式（引出してから利息をつける）
     last_fixed = fixed_assets[-1]
-    interest_fixed = int(round(last_fixed * rate)) if last_fixed > 0 else 0
-    next_fixed = int(round(last_fixed + interest_fixed - fixed_withdrawal))
-    if next_fixed < 0:
-        next_fixed = 0
+    temp_fixed = last_fixed - fixed_withdrawal if last_fixed > 0 else 0
+    if temp_fixed < 0:
+        temp_fixed = 0
         zero_flag_fixed = True
+    interest_fixed = int(round(temp_fixed * rate))
+    next_fixed = int(round(temp_fixed + interest_fixed))
     fixed_assets.append(next_fixed)
     fixed_withdrawals.append(fixed_withdrawal if not zero_flag_fixed else 0)
 
-    # 定率方式
+    # 定率方式（引出してから利息をつける）
     last_percent = percent_assets[-1]
     withdrawal_percent = int(round(last_percent * (percent_withdrawal / 100))) if last_percent > 0 else 0
-    interest_percent = int(round(last_percent * rate)) if last_percent > 0 else 0
-    next_percent = int(round(last_percent + interest_percent - withdrawal_percent))
-    if next_percent < 0:
-        next_percent = 0
+    temp_percent = last_percent - withdrawal_percent
+    if temp_percent < 0:
+        temp_percent = 0
         zero_flag_percent = True
+    interest_percent = int(round(temp_percent * rate))
+    next_percent = int(round(temp_percent + interest_percent))
     percent_assets.append(next_percent)
     percent_withdrawals.append(withdrawal_percent if not zero_flag_percent else 0)
 
