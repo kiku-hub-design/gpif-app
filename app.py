@@ -8,9 +8,6 @@ st.markdown("""
     body {
         background-color: #f78da7;
     }
-    .highlight-red {
-        color: red !important;
-    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -81,21 +78,14 @@ result_df = pd.DataFrame({
     "定率：引出額": percent_withdrawals,
 })
 
-# 条件付きで赤文字スタイルを付与
-styled_df = result_df.style.applymap(
-    lambda v: 'color: red;' if isinstance(v, int) and v == 0 else '',
-    subset=["定額：資産残高", "定率：資産残高"]
-)
+# スタイル適用：資産残高が0のセルを赤文字に
+def highlight_zero(val):
+    return 'color: red;' if val == 0 else ''
+
+styled_df = result_df.style.applymap(highlight_zero, subset=["定額：資産残高", "定率：資産残高"])
 
 # 表示
 st.markdown("### 📋 シミュレーション結果")
-st.data_editor(
-    styled_df,
-    use_container_width=True,
-    hide_index=True,
-    column_order=["年齢", "収益率（％）", "定額：資産残高", "定額：引出額", "定率：資産残高", "定率：引出額"],
-    disabled=True,
-    num_rows="dynamic"
-)
+st.dataframe(styled_df, use_container_width=True, hide_index=True)
 
 st.info("※ GPIFの過去収益率を参照に、50代プランを元に算出した仮試算です。将来の利回りを保証するものではありません。")
