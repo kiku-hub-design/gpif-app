@@ -87,10 +87,12 @@ def highlight_zero(s):
 
 # 表示
 st.markdown("### 📋 シミュレーション結果")
-st.dataframe(
+st.data_editor(
     result_df.style.apply(highlight_zero, subset=["定額：資産残高", "定率：資産残高"]),
     use_container_width=True,
-    hide_index=True
+    hide_index=True,
+    column_config={"年齢": st.column_config.Column(frozen=True)},
+    disabled=True
 )
 
 st.info("※ GPIFの過去収益率を使用した試算です。将来の利回りを保証するものではありません。")
