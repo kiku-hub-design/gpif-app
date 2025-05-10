@@ -8,9 +8,6 @@ st.markdown("""
     body {
         background-color: #f78da7;
     }
-    .highlight-red {
-        color: red;
-    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -81,18 +78,17 @@ result_df = pd.DataFrame({
     "定率：引出額": percent_withdrawals,
 })
 
-# 資産が０の行を赤にする条件
-def highlight_zero(s):
-    return ['color: red' if v == 0 else '' for v in s]
+# 資産が０の行に赤い背景色（styleではdata_editorに非対応のため今回はなし）
 
-# 表示
+# 表示（年齢を先頭列に固定した順番）
 st.markdown("### 📋 シミュレーション結果")
 st.data_editor(
-    result_df.style.apply(highlight_zero, subset=["定額：資産残高", "定率：資産残高"]),
+    result_df,
     use_container_width=True,
     hide_index=True,
-    column_config={"年齢": st.column_config.Column(frozen=True)},
-    disabled=True
+    column_order=["年齢", "収益率（％）", "定額：資産残高", "定額：引出額", "定率：資産残高", "定率：引出額"],
+    disabled=True,
+    num_rows="dynamic"
 )
 
-st.info("※ GPIFの過去収益率を使用した試算です。将来の利回りを保証するものではありません。")
+st.info("※ GPIFの過去収益率を参照に、50代プランを元に算出した仮試算です。将来の利回りを保証するものではありません。")
