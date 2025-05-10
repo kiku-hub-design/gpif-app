@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
 
-# ファイルの読み込み（GitHub上のExcelファイルURLを指定）
-EXCEL_URL = "https://raw.githubusercontent.com/kiku-hub-design/gpif-app/main/GPIF_収益率_配分比率_均等＋指定運用_2001_2023.xlsx"
+# ファイルの読み込み（新しいファイル名に変更済み）
+EXCEL_URL = "https://raw.githubusercontent.com/kiku-hub-design/gpif-app/main/gpif_data_2001_2023.xlsx"
 
 # ページ設定
 st.set_page_config(page_title="GPIFシミュレーター", layout="centered")
