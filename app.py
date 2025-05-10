@@ -8,8 +8,8 @@ st.markdown("""
     body {
         background-color: #f78da7;
     }
-    .st-emotion-cache-ocqkz7 {
-        color: red;
+    .highlight-red {
+        color: red !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -81,14 +81,16 @@ result_df = pd.DataFrame({
     "定率：引出額": percent_withdrawals,
 })
 
-# 赤文字表示のためのCSSクラス列を追加（streamlit data_editorではハック的対応）
-result_df["定額：資産残高"] = result_df["定額：資産残高"].apply(lambda x: f"❗ {x}" if x == 0 else x)
-result_df["定率：資産残高"] = result_df["定率：資産残高"].apply(lambda x: f"❗ {x}" if x == 0 else x)
+# 条件付きで赤文字スタイルを付与
+styled_df = result_df.style.applymap(
+    lambda v: 'color: red;' if isinstance(v, int) and v == 0 else '',
+    subset=["定額：資産残高", "定率：資産残高"]
+)
 
 # 表示
 st.markdown("### 📋 シミュレーション結果")
 st.data_editor(
-    result_df,
+    styled_df,
     use_container_width=True,
     hide_index=True,
     column_order=["年齢", "収益率（％）", "定額：資産残高", "定額：引出額", "定率：資産残高", "定率：引出額"],
