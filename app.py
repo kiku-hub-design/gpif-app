@@ -17,7 +17,7 @@ st.title("💰 取りくずしシミュレーター")
 col1, col2 = st.columns(2)
 with col1:
     start_age = st.number_input("取りくずし開始年齢（歳）", min_value=40, max_value=100, value=65)
-    initial_assets = st.number_input("初期資産額（万円）", min_value=0, value=3000, step=100)
+    initial_assets = st.number_input("初期資産額（万円）", min_value=0, value=2000, value=3000, step=100)
 with col2:
     fixed_withdrawal = st.number_input("年間引出額（定額・万円）", min_value=0, value=120, step=10)
     percent_withdrawal = st.slider("年間引出率（定率・％）", min_value=0.0, max_value=20.0, value=4.0, step=0.1)
@@ -68,7 +68,7 @@ for i in range(max_years):
     percent_assets.append(next_percent)
     percent_withdrawals.append(withdrawal_percent if not zero_flag_percent else 0)
 
-# データフレーム化
+# データフレーム化（収益率のみ小数1位まで）
 result_df = pd.DataFrame({
     "年齢": ages,
     "収益率（％）": [round(r * 100, 1) for r in repeated_rates[:len(ages)]],
@@ -82,9 +82,7 @@ result_df = pd.DataFrame({
 def highlight_zero(val):
     return 'color: red;' if val == 0 else ''
 
-styled_df = result_df.style \
-    .applymap(highlight_zero, subset=["定額：資産残高", "定率：資産残高"]) \
-    .format({"収益率（％）": "{:.1f}"})
+styled_df = result_df.style.applymap(highlight_zero, subset=["定額：資産残高", "定率：資産残高"])
 
 # 表示
 st.markdown("### 📋 シミュレーション結果")
