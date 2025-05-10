@@ -68,10 +68,10 @@ for i in range(max_years):
     percent_assets.append(next_percent)
     percent_withdrawals.append(withdrawal_percent if not zero_flag_percent else 0)
 
-# データフレーム化
+# データフレーム化（収益率のみ小数1位まで）
 result_df = pd.DataFrame({
     "年齢": ages,
-    "収益率（％）": [int(round(r * 100)) for r in repeated_rates[:len(ages)]],
+    "収益率（％）": [round(r * 100, 1) for r in repeated_rates[:len(ages)]],
     "定額：資産残高": fixed_assets[1:],
     "定額：引出額": fixed_withdrawals,
     "定率：資産残高": percent_assets[1:],
