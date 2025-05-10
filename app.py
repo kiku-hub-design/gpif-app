@@ -1,3 +1,14 @@
+# ------------------------------------------------------------
+# このコードは 木村久美（Kumi Kimura） によって作成されました。
+# 著作権は放棄されておらず、無断での商用利用・転載・再配布を禁じます。
+# 教育目的・参考利用は歓迎しますが、必ず出典を明記してください。
+#
+# Created by Kumi Kimura
+# Copyright retained. Unauthorized commercial use, reproduction,
+# or redistribution is strictly prohibited.
+# Educational or personal reference use is allowed with proper attribution.
+# ------------------------------------------------------------
+
 import streamlit as st
 import pandas as pd
 
