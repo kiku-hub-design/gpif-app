@@ -1,12 +1,17 @@
 import streamlit as st
 import pandas as pd
 
-# ページ設定とテーマカラー
+# ページ設定とテーマカラー（印刷時は白背景）
 st.set_page_config(page_title="取りくずしシミュレーター", layout="centered")
 st.markdown("""
     <style>
     body {
         background-color: #f78da7;
+    }
+    @media print {
+        body {
+            background-color: white !important;
+        }
     }
     </style>
 """, unsafe_allow_html=True)
@@ -35,7 +40,7 @@ gpif_rates = df['指定配分_収益率（％）'].fillna(0) / 100
 max_years = 35
 repeated_rates = (gpif_rates.tolist() * ((max_years // len(gpif_rates)) + 1))[:max_years]
 
-# 初期設定
+# 計算
 ages = list(range(start_age, start_age + max_years))
 fixed_assets = [initial_assets]
 percent_assets = [initial_assets]
@@ -47,7 +52,7 @@ zero_flag_percent = False
 for i in range(max_years):
     rate = repeated_rates[i]
 
-    # 定額方式（引出してから利息をつける）
+    # 定額
     last_fixed = fixed_assets[-1]
     temp_fixed = last_fixed - fixed_withdrawal if last_fixed > 0 else 0
     if temp_fixed < 0:
@@ -58,7 +63,7 @@ for i in range(max_years):
     fixed_assets.append(next_fixed)
     fixed_withdrawals.append(fixed_withdrawal if not zero_flag_fixed else 0)
 
-    # 定率方式（引出してから利息をつける）
+    # 定率
     last_percent = percent_assets[-1]
     withdrawal_percent = int(round(last_percent * (percent_withdrawal / 100))) if last_percent > 0 else 0
     temp_percent = last_percent - withdrawal_percent
