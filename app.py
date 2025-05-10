@@ -32,7 +32,7 @@ def load_data():
     return pd.read_excel(EXCEL_URL)
 
 df = load_data()
-gpif_rates = df['指定配分_収益率（％）'] / 100
+gpif_rates = df['指定配分_収益率（％）'].fillna(0) / 100
 
 # GPIF収益率を35年分繰り返す
 max_years = 35
@@ -52,8 +52,8 @@ for i in range(max_years):
 
     # 定額方式
     last_fixed = fixed_assets[-1]
-    interest_fixed = round(last_fixed * rate)
-    next_fixed = round(last_fixed + interest_fixed - fixed_withdrawal)
+    interest_fixed = int(round(last_fixed * rate)) if last_fixed > 0 else 0
+    next_fixed = int(round(last_fixed + interest_fixed - fixed_withdrawal))
     if next_fixed < 0:
         next_fixed = 0
         zero_flag_fixed = True
@@ -62,9 +62,9 @@ for i in range(max_years):
 
     # 定率方式
     last_percent = percent_assets[-1]
-    withdrawal_percent = round(last_percent * (percent_withdrawal / 100))
-    interest_percent = round(last_percent * rate)
-    next_percent = round(last_percent + interest_percent - withdrawal_percent)
+    withdrawal_percent = int(round(last_percent * (percent_withdrawal / 100))) if last_percent > 0 else 0
+    interest_percent = int(round(last_percent * rate)) if last_percent > 0 else 0
+    next_percent = int(round(last_percent + interest_percent - withdrawal_percent))
     if next_percent < 0:
         next_percent = 0
         zero_flag_percent = True
@@ -74,7 +74,7 @@ for i in range(max_years):
 # データフレーム化
 result_df = pd.DataFrame({
     "年齢": ages,
-    "収益率（％）": [round(r * 100) for r in repeated_rates[:len(ages)]],
+    "収益率（％）": [int(round(r * 100)) for r in repeated_rates[:len(ages)]],
     "定額：資産残高": fixed_assets[1:],
     "定額：引出額": fixed_withdrawals,
     "定率：資産残高": percent_assets[1:],
