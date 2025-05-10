@@ -1,12 +1,9 @@
 # ------------------------------------------------------------
 # このコードは 木村久美（Kumi Kimura） によって作成されました。
-# 著作権は放棄されておらず、無断での商用利用・転載・再配布を禁じます。
-# 教育目的・参考利用は歓迎しますが、必ず出典を明記してください。
-#
+# 個人使用に限ります。無断での転載・再配布を禁じます。
 # Created by Kumi Kimura
-# Copyright retained. Unauthorized commercial use, reproduction,
-# or redistribution is strictly prohibited.
-# Educational or personal reference use is allowed with proper attribution.
+# This code was created by Kumi Kimura.
+# For personal use only. Unauthorized reproduction or redistribution is prohibited.
 # ------------------------------------------------------------
 
 import streamlit as st
