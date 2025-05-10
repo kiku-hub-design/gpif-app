@@ -68,7 +68,7 @@ for i in range(max_years):
     percent_assets.append(next_percent)
     percent_withdrawals.append(withdrawal_percent if not zero_flag_percent else 0)
 
-# データフレーム化（収益率のみ小数1位まで）
+# データフレーム化
 result_df = pd.DataFrame({
     "年齢": ages,
     "収益率（％）": [round(r * 100, 1) for r in repeated_rates[:len(ages)]],
@@ -82,7 +82,9 @@ result_df = pd.DataFrame({
 def highlight_zero(val):
     return 'color: red;' if val == 0 else ''
 
-styled_df = result_df.style.applymap(highlight_zero, subset=["定額：資産残高", "定率：資産残高"])
+styled_df = result_df.style \
+    .applymap(highlight_zero, subset=["定額：資産残高", "定率：資産残高"]) \
+    .format({"収益率（％）": "{:.1f}"})
 
 # 表示
 st.markdown("### 📋 シミュレーション結果")
