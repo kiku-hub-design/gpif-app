@@ -10,7 +10,7 @@ import streamlit as st
 import pandas as pd
 
 # ページ設定とテーマカラー（印刷時は白背景）
-st.set_page_config(page_title="取りくずしシミュレーター", layout="centered")
+st.set_page_config(page_title="取崩シミュ", layout="centered")
 st.markdown("""
     <style>
     body {
